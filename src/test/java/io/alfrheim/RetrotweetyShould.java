@@ -4,12 +4,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.inOrder;
@@ -45,6 +43,8 @@ public class RetrotweetyShould {
 
         given(clock.now())
                 .willReturn(twoSecondsAgo, now);
+
+        given(clock.elapsedTime(Mockito.any())).willReturn(Duration.ZERO, Duration.ofSeconds(2));
 
         retrotweety.command("Superman -> Hello! I'm superawseome!");
         retrotweety.command("Spiderman follows Superman");

@@ -31,7 +31,7 @@ public class Retrotweety {
             DomainUser user = getDomainUser(userName);
 
             String postMessage = split[1].trim();
-            user.write(new DomainMessage(user, postMessage, clock.now(), clock));
+            user.write(new DomainMessage(user, postMessage, clock.now()));
 
         } else if (commandLine.contains("wall")) {
             //write wall
@@ -45,7 +45,7 @@ public class Retrotweety {
 
              Optional.of(posts).ifPresent(
                     u -> u.stream()
-                            .map(DomainMessage::toString)
+                            .map((m)->m.format(clock))
                             .forEach(console::printLine));
 
         } else if (commandLine.contains("follows")) {
@@ -63,7 +63,7 @@ public class Retrotweety {
             //write own posts
             Optional.ofNullable(users.get(commandLine)).ifPresent(
                     u -> u.getDomainMessages().stream()
-                            .map(DomainMessage::toString)
+                            .map((m)->m.format(clock))
                             .forEach(console::printLine));
         }
     }
