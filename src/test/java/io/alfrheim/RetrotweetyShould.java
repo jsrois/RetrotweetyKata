@@ -6,6 +6,12 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.inOrder;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -13,6 +19,9 @@ public class RetrotweetyShould {
 
     @Mock
     private  Console console;
+
+    @Mock
+    private Clock clock;
 
     @Test
     public void print_the_superman_message() throws Exception {
@@ -27,10 +36,17 @@ public class RetrotweetyShould {
 
     @Test
     public void print_the_followers_message_on_the_wall() throws Exception {
-        Retrotweety retrotweety = new Retrotweety(console);
+        Retrotweety retrotweety = new Retrotweety(console, clock);
+
+        ZonedDateTime now = LocalDateTime.of(2016, Month.AUGUST, 22, 14, 30, 15)
+                .atZone(ZoneId.of("UTC"));
+        ZonedDateTime twoSecondsAgo = LocalDateTime.of(2016, Month.AUGUST, 22, 14, 30, 13)
+                .atZone(ZoneId.of("UTC"));
+
+        given(clock.now())
+                .willReturn(twoSecondsAgo, now);
 
         retrotweety.command("Superman -> Hello! I'm superawseome!");
-        Thread.sleep(2000);
         retrotweety.command("Spiderman follows Superman");
         retrotweety.command("Spiderman -> Hey Superman! I'm following you!");
 

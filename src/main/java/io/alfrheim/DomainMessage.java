@@ -9,15 +9,13 @@ public class DomainMessage {
     private final DomainUser domainUser;
     private final String message;
     private final ZonedDateTime created;
+    private Clock clock;
 
-    public DomainMessage(DomainUser domainUser, String message) {
-        this(domainUser, message, ZonedDateTime.now(ZoneId.of("UTC")));
-    }
-
-    public DomainMessage(DomainUser domainUser, String message, ZonedDateTime created) {
+    public DomainMessage(DomainUser domainUser, String message, ZonedDateTime created, Clock clock) {
         this.domainUser = domainUser;
         this.message = message;
         this.created = created;
+        this.clock = clock;
     }
 
     @Override
@@ -27,7 +25,7 @@ public class DomainMessage {
     }
 
     private Duration elapsedTime(ZonedDateTime time) {
-        ZonedDateTime currentDate = ZonedDateTime.now(ZoneId.of("UTC"));
+        ZonedDateTime currentDate = clock.now();
 
         return Duration.between(time, currentDate);
     }

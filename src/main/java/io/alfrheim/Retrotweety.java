@@ -5,6 +5,7 @@ import java.util.*;
 public class Retrotweety {
 
     private final Console console;
+    private final Clock clock;
 
     private static final  Comparator<DomainMessage> POSTS_DESC =
             (m1, m2) -> m2.getCreated().compareTo(m1.getCreated());
@@ -13,6 +14,12 @@ public class Retrotweety {
 
     public Retrotweety(Console console) {
         this.console = console;
+        clock = new Clock();
+    }
+
+    public Retrotweety(Console console, Clock clock) {
+        this.console = console;
+        this.clock = clock;
     }
 
     public void command(String commandLine) {
@@ -24,7 +31,7 @@ public class Retrotweety {
             DomainUser user = getDomainUser(userName);
 
             String postMessage = split[1].trim();
-            user.write(new DomainMessage(user, postMessage));
+            user.write(new DomainMessage(user, postMessage, clock.now(), clock));
 
         } else if (commandLine.contains("wall")) {
             //write wall
