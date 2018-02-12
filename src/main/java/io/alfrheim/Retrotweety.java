@@ -4,14 +4,12 @@ import java.util.*;
 
 public class Retrotweety {
 
-
     private final Console console;
 
     private static final  Comparator<DomainMessage> POSTS_DESC =
             (m1, m2) -> m2.getCreated().compareTo(m1.getCreated());
 
     private Map<String, DomainUser> users = new HashMap<>();
-
 
     public Retrotweety(Console console) {
         this.console = console;
